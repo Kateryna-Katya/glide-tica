@@ -1,43 +1,69 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Инициализация иконок Lucide
-    lucide.createIcons();
+    /**
+     * 1. ИНИЦИАЛИЗАЦИЯ ИКОНОК
+     * Используем Lucide для отрисовки вектроных иконок
+     */
+    if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+    }
 
-    // Мобильное меню
+    /**
+     * 2. МОБИЛЬНОЕ МЕНЮ (BURGER)
+     */
     const burger = document.getElementById('burger');
     const nav = document.getElementById('nav');
+    const navLinks = document.querySelectorAll('.nav__link');
 
-    burger.addEventListener('click', () => {
+    const toggleMenu = () => {
         nav.classList.toggle('nav--active');
         burger.classList.toggle('burger--active');
+        document.body.classList.toggle('no-scroll'); // Блокировка скролла при открытом меню
         
-        // Анимация иконки бургера
-        const spans = burger.querySelectorAll('span');
+        // Анимация иконки
         if (nav.classList.contains('nav--active')) {
             burger.style.transform = 'rotate(90deg)';
         } else {
             burger.style.transform = 'rotate(0)';
         }
+    };
+
+    if (burger) {
+        burger.addEventListener('click', toggleMenu);
+    }
+
+    // Закрытие меню при клике на ссылку
+    navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            if (nav.classList.contains('nav--active')) toggleMenu();
+        });
     });
 
-    // Смена прозрачности хедера при скролле
+    /**
+     * 3. ЭФФЕКТЫ ХЕДЕРА ПРИ СКРОЛЛЕ
+     */
     const header = document.querySelector('.header');
     window.addEventListener('scroll', () => {
         if (window.scrollY > 50) {
             header.style.padding = '12px 0';
             header.style.background = 'rgba(5, 5, 5, 0.95)';
+            header.style.borderBottom = '1px solid rgba(0, 243, 255, 0.2)';
         } else {
             header.style.padding = '20px 0';
             header.style.background = 'rgba(5, 5, 5, 0.8)';
+            header.style.borderBottom = '1px solid rgba(255, 255, 255, 0.05)';
         }
     });
 
-    // Плавный переход по якорям
+    /**
+     * 4. ПЛАВНЫЙ СКРОЛЛ ПО ЯКОРЯМ
+     */
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();
-            nav.classList.remove('nav--active');
+            const targetId = this.getAttribute('href');
+            if (targetId === '#') return;
             
-            const target = document.querySelector(this.getAttribute('href'));
+            const target = document.querySelector(targetId);
             if (target) {
                 window.scrollTo({
                     top: target.offsetTop - 80,
@@ -46,191 +72,169 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
-    // Функция инициализации анимаций появления
-const initScrollReveal = () => {
-    const reveals = document.querySelectorAll('.reveal');
+
+    /**
+     * 5. ОБЩАЯ АНИМАЦИЯ ПОЯВЛЕНИЯ (SCROLL REVEAL)
+     */
+    const revealElements = document.querySelectorAll('.reveal');
     
-    const revealCallback = (entries, observer) => {
+    const revealObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                // Добавляем небольшую задержку для каждого элемента в очереди
                 const delay = entry.target.dataset.delay || 0;
                 setTimeout(() => {
                     entry.target.classList.add('reveal--active');
                 }, delay);
-                observer.unobserve(entry.target);
+                revealObserver.unobserve(entry.target);
             }
         });
-    };
+    }, { threshold: 0.15 });
 
-    const revealObserver = new IntersectionObserver(revealCallback, {
-        threshold: 0.1
-    });
-
-    reveals.forEach((el, index) => {
-        // Автоматически назначаем задержку для элементов в одной секции
-        el.dataset.delay = index * 150; 
+    revealElements.forEach((el, index) => {
+        // Устанавливаем шахматную задержку для элементов в одной секции
+        const parent = el.closest('section');
+        const siblings = parent ? parent.querySelectorAll('.reveal') : [];
+        const order = Array.from(siblings).indexOf(el);
+        el.dataset.delay = order * 100;
         revealObserver.observe(el);
     });
-};
 
-// Вызов функции (добавьте это в DOMContentLoaded)
-initScrollReveal();
-
-// Параллакс эффект для карточки в Hero (нативный JS)
-const heroCard = document.querySelector('.hero__card');
-if (heroCard) {
-    document.addEventListener('mousemove', (e) => {
-        const x = (window.innerWidth / 2 - e.pageX) / 30;
-        const y = (window.innerHeight / 2 - e.pageY) / 30;
-        heroCard.style.transform = `perspective(1000px) rotateY(${x}deg) rotateX(${y}deg)`;
-    });
+    /**
+     * 6. HERO PARALLAX (ДВИЖЕНИЕ КАРТОЧКИ)
+     */
+    const heroCard = document.querySelector('.hero__card');
+    if (heroCard && window.innerWidth > 992) {
+        document.addEventListener('mousemove', (e) => {
+            const x = (window.innerWidth / 2 - e.pageX) / 40;
+            const y = (window.innerHeight / 2 - e.pageY) / 40;
+            heroCard.style.transform = `perspective(1000px) rotateY(${x}deg) rotateX(${-y}deg)`;
+        });
     }
-    // Добавьте этот код в DOMContentLoaded
-const initCardGlow = () => {
-    const cards = document.querySelectorAll('.platform__card');
-    
-    cards.forEach(card => {
+
+    /**
+     * 7. ИНТЕРАКТИВНОЕ СВЕЧЕНИЕ КАРТОЧЕК (PLATFORM SECTION)
+     */
+    const platformCards = document.querySelectorAll('.platform__card');
+    platformCards.forEach(card => {
         const glow = card.querySelector('.platform__card-glow');
-        
         card.addEventListener('mousemove', (e) => {
             const rect = card.getBoundingClientRect();
             const x = e.clientX - rect.left;
             const y = e.clientY - rect.top;
-            
-            glow.style.left = `${x - 50}px`;
-            glow.style.top = `${y - 50}px`;
-            glow.style.opacity = '0.4';
+            if (glow) {
+                glow.style.left = `${x - 50}px`;
+                glow.style.top = `${y - 50}px`;
+                glow.style.opacity = '0.4';
+            }
         });
-        
         card.addEventListener('mouseleave', () => {
-            glow.style.opacity = '0';
+            if (glow) glow.style.opacity = '0';
         });
     });
-};
 
-    initCardGlow();
-    // Функция для анимации прогресс-баров
-const initProgressBars = () => {
-    const progressSection = document.querySelector('.benefits__stats');
-    const fills = document.querySelectorAll('.progress-box__fill');
-
+    /**
+     * 8. АНИМАЦИЯ ПРОГРЕСС-БАРОВ (BENEFITS)
+     */
+    const progressFills = document.querySelectorAll('.progress-box__fill');
     const progressObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                fills.forEach(fill => {
-                    fill.style.width = fill.getAttribute('style').match(/--width:\s*([\d%]+)/)[1];
+                progressFills.forEach(fill => {
+                    const widthMatch = fill.getAttribute('style').match(/--width:\s*([\d%]+)/);
+                    if (widthMatch) fill.style.width = widthMatch[1];
                 });
                 progressObserver.unobserve(entry.target);
             }
         });
     }, { threshold: 0.5 });
 
-    if (progressSection) {
-        progressObserver.observe(progressSection);
-    }
-};
+    const benefitsSection = document.querySelector('.benefits__stats');
+    if (benefitsSection) progressObserver.observe(benefitsSection);
 
-// Вызовите в DOMContentLoaded
-    initProgressBars();
-    const initTechCards = () => {
-    const cards = document.querySelectorAll('.tech-card');
-    
-    cards.forEach(card => {
+    /**
+     * 9. FLIP CARDS LOGIC (TECH STACK)
+     * Переворот по клику для мобильных устройств
+     */
+    const techCards = document.querySelectorAll('.tech-card');
+    techCards.forEach(card => {
         card.addEventListener('click', () => {
-            card.classList.toggle('flipped');
             const inner = card.querySelector('.tech-card__inner');
-            if(card.classList.contains('flipped')) {
-                inner.style.transform = 'rotateY(180deg)';
-            } else {
-                inner.style.transform = 'rotateY(0deg)';
-            }
+            const isFlipped = card.classList.toggle('flipped');
+            inner.style.transform = isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)';
         });
     });
-};
 
-// Вызовите в DOMContentLoaded
-    initTechCards();
-    // Можно добавить в DOMContentLoaded, если нужно оживить иконки стрелок
-const blogLinks = document.querySelectorAll('.blog__link');
-blogLinks.forEach(link => {
-    link.addEventListener('mouseenter', () => {
-        // Дополнительный эффект при наведении, если нужно
-    });
-});
-    const initContactForm = () => {
-    const form = document.getElementById('contact-form');
-    const phoneInput = document.getElementById('phone');
-    const captchaQuestion = document.getElementById('captcha-question');
-    const captchaInput = document.getElementById('captcha-input');
-    const statusBox = document.getElementById('form-status');
+    /**
+     * 10. ВАЛИДАЦИЯ ФОРМЫ, КАПЧА И ОТПРАВКА (AJAX SIMULATION)
+     */
+    const contactForm = document.getElementById('contact-form');
+    if (contactForm) {
+        const phoneInput = document.getElementById('phone');
+        const captchaQuestion = document.getElementById('captcha-question');
+        const captchaInput = document.getElementById('captcha-input');
+        const statusBox = document.getElementById('form-status');
 
-    // 1. Генерация капчи
-    const num1 = Math.floor(Math.random() * 10) + 1;
-    const num2 = Math.floor(Math.random() * 10) + 1;
-    const captchaAnswer = num1 + num2;
-    if (captchaQuestion) captchaQuestion.textContent = `${num1} + ${num2}`;
+        // Генерация капчи
+        const n1 = Math.floor(Math.random() * 10) + 1;
+        const n2 = Math.floor(Math.random() * 10) + 1;
+        const sum = n1 + n2;
+        if (captchaQuestion) captchaQuestion.textContent = `${n1} + ${n2}`;
 
-    // 2. Валидация телефона (только цифры)
-    phoneInput.addEventListener('input', (e) => {
-        e.target.value = e.target.value.replace(/[^\d+]/g, '');
-    });
+        // Только цифры для телефона
+        phoneInput.addEventListener('input', (e) => {
+            e.target.value = e.target.value.replace(/[^\d+]/g, '');
+        });
 
-    // 3. Обработка отправки
-    form.addEventListener('submit', (e) => {
-        e.preventDefault();
-
-        // Проверка капчи
-        if (parseInt(captchaInput.value) !== captchaAnswer) {
-            statusBox.textContent = 'Ошибка: Неверный ответ капчи.';
-            statusBox.className = 'form-status form-status--error';
-            return;
-        }
-
-        // Имитация AJAX
-        const btn = form.querySelector('button');
-        const originalBtnText = btn.textContent;
-        btn.disabled = true;
-        btn.textContent = 'Отправка...';
-
-        setTimeout(() => {
-            btn.textContent = originalBtnText;
-            btn.disabled = false;
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
             
-            // Успех
-            statusBox.textContent = 'Спасибо! Ваша заявка принята. Мы свяжемся с вами в ближайшее время.';
-            statusBox.className = 'form-status form-status--success';
-            
-            form.reset();
-            // Обновляем капчу для новой попытки (опционально)
-        }, 1500);
-    });
-};
+            // Сброс статуса
+            statusBox.style.display = 'none';
+            statusBox.className = 'form-status';
 
-// Вызовите в DOMContentLoaded
-    initContactForm();
-    const initCookiePopup = () => {
-    const popup = document.getElementById('cookie-popup');
-    const acceptBtn = document.getElementById('cookie-accept');
+            // Проверка капчи
+            if (parseInt(captchaInput.value) !== sum) {
+                statusBox.textContent = 'Ошибка: Неверный ответ на защитный вопрос.';
+                statusBox.classList.add('form-status--error');
+                statusBox.style.display = 'block';
+                return;
+            }
 
-    // Проверяем, давал ли пользователь согласие ранее
-    const cookieAccepted = localStorage.getItem('cookieConsent');
+            // Симуляция AJAX
+            const submitBtn = contactForm.querySelector('button');
+            const originalText = submitBtn.textContent;
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Обработка данных...';
 
-    if (!cookieAccepted) {
-        // Показываем с небольшой задержкой после загрузки
-        setTimeout(() => {
-            popup.classList.add('cookie-popup--active');
-        }, 2000);
+            setTimeout(() => {
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalText;
+                
+                statusBox.textContent = 'Заявка успешно отправлена! Эксперт GlideTica свяжется с вами.';
+                statusBox.classList.add('form-status--success');
+                statusBox.style.display = 'block';
+                
+                contactForm.reset();
+            }, 2000);
+        });
     }
 
-    acceptBtn.addEventListener('click', () => {
-        // Сохраняем выбор
-        localStorage.setItem('cookieConsent', 'true');
-        // Прячем окно
-        popup.classList.remove('cookie-popup--active');
-    });
-};
+    /**
+     * 11. COOKIE POPUP LOGIC
+     */
+    const cookiePopup = document.getElementById('cookie-popup');
+    const cookieAccept = document.getElementById('cookie-accept');
 
-// Вызовите в DOMContentLoaded
-initCookiePopup();
+    if (cookiePopup && !localStorage.getItem('cookieConsent')) {
+        setTimeout(() => {
+            cookiePopup.classList.add('cookie-popup--active');
+        }, 3000);
+    }
+
+    if (cookieAccept) {
+        cookieAccept.addEventListener('click', () => {
+            localStorage.setItem('cookieConsent', 'true');
+            cookiePopup.classList.remove('cookie-popup--active');
+        });
+    }
 });
