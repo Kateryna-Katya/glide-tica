@@ -208,5 +208,29 @@ blogLinks.forEach(link => {
 };
 
 // Вызовите в DOMContentLoaded
-initContactForm();
+    initContactForm();
+    const initCookiePopup = () => {
+    const popup = document.getElementById('cookie-popup');
+    const acceptBtn = document.getElementById('cookie-accept');
+
+    // Проверяем, давал ли пользователь согласие ранее
+    const cookieAccepted = localStorage.getItem('cookieConsent');
+
+    if (!cookieAccepted) {
+        // Показываем с небольшой задержкой после загрузки
+        setTimeout(() => {
+            popup.classList.add('cookie-popup--active');
+        }, 2000);
+    }
+
+    acceptBtn.addEventListener('click', () => {
+        // Сохраняем выбор
+        localStorage.setItem('cookieConsent', 'true');
+        // Прячем окно
+        popup.classList.remove('cookie-popup--active');
+    });
+};
+
+// Вызовите в DOMContentLoaded
+initCookiePopup();
 });
