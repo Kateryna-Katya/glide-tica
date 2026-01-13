@@ -132,5 +132,30 @@ const initProgressBars = () => {
 };
 
 // Вызовите в DOMContentLoaded
-initProgressBars();
+    initProgressBars();
+    const initTechCards = () => {
+    const cards = document.querySelectorAll('.tech-card');
+    
+    cards.forEach(card => {
+        card.addEventListener('click', () => {
+            card.classList.toggle('flipped');
+            const inner = card.querySelector('.tech-card__inner');
+            if(card.classList.contains('flipped')) {
+                inner.style.transform = 'rotateY(180deg)';
+            } else {
+                inner.style.transform = 'rotateY(0deg)';
+            }
+        });
+    });
+};
+
+// Вызовите в DOMContentLoaded
+    initTechCards();
+    // Можно добавить в DOMContentLoaded, если нужно оживить иконки стрелок
+const blogLinks = document.querySelectorAll('.blog__link');
+blogLinks.forEach(link => {
+    link.addEventListener('mouseenter', () => {
+        // Дополнительный эффект при наведении, если нужно
+    });
+});
 });

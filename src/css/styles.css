@@ -706,3 +706,247 @@ h3,
         margin: 0 auto 20px !important;
     }
 }
+/* --- INNOVATIONS & TICKER --- */
+.innovations {
+    padding: 100px 0;
+    overflow: hidden;
+}
+
+/* Ticker Styles */
+.ticker {
+    background: var(--accent-cyan);
+    padding: 15px 0;
+    margin-bottom: 100px;
+    transform: rotate(-1deg);
+    width: 110%;
+    margin-left: -5%;
+    box-shadow: 0 0 30px rgba(0, 243, 255, 0.3);
+}
+
+.ticker__wrapper {
+    display: flex;
+    white-space: nowrap;
+    animation: tickerLoop 30s linear infinite;
+}
+
+.ticker__item {
+    color: var(--bg-color);
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 700;
+    font-size: 1.2rem;
+    padding: 0 30px;
+    text-transform: uppercase;
+}
+
+@keyframes tickerLoop {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+/* Tech Grid & Flip Cards */
+.tech-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+}
+
+.tech-card {
+    height: 300px;
+    perspective: 1000px;
+}
+
+.tech-card__inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transform-style: preserve-3d;
+    cursor: pointer;
+}
+
+.tech-card:hover .tech-card__inner {
+    transform: rotateY(180deg);
+}
+
+.tech-card__front,
+.tech-card__back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.tech-card__front {
+    background: #0d0d0d;
+    color: white;
+}
+
+.tech-card__front i {
+    color: var(--accent-cyan);
+    width: 50px;
+    height: 50px;
+    margin-bottom: 20px;
+}
+
+.tech-card__front h3 {
+    font-size: 1.1rem;
+    letter-spacing: 2px;
+}
+
+.tech-card__back {
+    background: linear-gradient(135deg, var(--accent-purple), #50006d);
+    color: white;
+    transform: rotateY(180deg);
+}
+
+.tech-card__back p {
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+/* Mobile Adjustments */
+@media (max-width: 768px) {
+    .ticker {
+        margin-bottom: 60px;
+    }
+
+    .ticker__item {
+        font-size: 0.9rem;
+    }
+}
+/* --- BLOG SECTION --- */
+.blog {
+    padding: 100px 0;
+    background: #050505;
+}
+
+.blog__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 40px;
+    margin-bottom: 60px;
+}
+
+.blog__card {
+    background: #0a0a0a;
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: var(--transition);
+    display: flex;
+    flex-direction: column;
+}
+
+.blog__card:hover {
+    transform: translateY(-10px);
+    border-color: var(--accent-purple);
+    box-shadow: 0 10px 40px rgba(188, 0, 255, 0.1);
+}
+
+.blog__img-wrap {
+    position: relative;
+    height: 220px;
+    overflow: hidden;
+}
+
+.blog__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.blog__card:hover .blog__img {
+    transform: scale(1.1);
+}
+
+.blog__category {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: var(--accent-cyan);
+    color: var(--bg-color);
+    padding: 5px 15px;
+    border-radius: 40px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    box-shadow: 0 0 15px var(--accent-cyan);
+}
+
+.blog__content {
+    padding: 30px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.blog__date {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.75rem;
+    color: var(--accent-purple);
+    margin-bottom: 15px;
+    letter-spacing: 1px;
+}
+
+.blog__card-title {
+    font-size: 1.25rem;
+    margin-bottom: 15px;
+    line-height: 1.4;
+    color: #fff;
+}
+
+.blog__card-text {
+    font-size: 0.95rem;
+    opacity: 0.6;
+    margin-bottom: 25px;
+    line-height: 1.6;
+}
+
+.blog__link {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--accent-cyan);
+}
+
+.blog__link i {
+    width: 18px;
+    transition: var(--transition);
+}
+
+.blog__link:hover i {
+    transform: translateX(5px);
+}
+
+.blog__footer {
+    text-align: center;
+}
+
+/* Mobile Adjustments */
+@media (max-width: 768px) {
+    .blog__grid {
+        gap: 30px;
+    }
+
+    .blog__img-wrap {
+        height: 180px;
+    }
+}
