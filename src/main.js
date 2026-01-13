@@ -158,4 +158,55 @@ blogLinks.forEach(link => {
         // Дополнительный эффект при наведении, если нужно
     });
 });
+    const initContactForm = () => {
+    const form = document.getElementById('contact-form');
+    const phoneInput = document.getElementById('phone');
+    const captchaQuestion = document.getElementById('captcha-question');
+    const captchaInput = document.getElementById('captcha-input');
+    const statusBox = document.getElementById('form-status');
+
+    // 1. Генерация капчи
+    const num1 = Math.floor(Math.random() * 10) + 1;
+    const num2 = Math.floor(Math.random() * 10) + 1;
+    const captchaAnswer = num1 + num2;
+    if (captchaQuestion) captchaQuestion.textContent = `${num1} + ${num2}`;
+
+    // 2. Валидация телефона (только цифры)
+    phoneInput.addEventListener('input', (e) => {
+        e.target.value = e.target.value.replace(/[^\d+]/g, '');
+    });
+
+    // 3. Обработка отправки
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        // Проверка капчи
+        if (parseInt(captchaInput.value) !== captchaAnswer) {
+            statusBox.textContent = 'Ошибка: Неверный ответ капчи.';
+            statusBox.className = 'form-status form-status--error';
+            return;
+        }
+
+        // Имитация AJAX
+        const btn = form.querySelector('button');
+        const originalBtnText = btn.textContent;
+        btn.disabled = true;
+        btn.textContent = 'Отправка...';
+
+        setTimeout(() => {
+            btn.textContent = originalBtnText;
+            btn.disabled = false;
+            
+            // Успех
+            statusBox.textContent = 'Спасибо! Ваша заявка принята. Мы свяжемся с вами в ближайшее время.';
+            statusBox.className = 'form-status form-status--success';
+            
+            form.reset();
+            // Обновляем капчу для новой попытки (опционально)
+        }, 1500);
+    });
+};
+
+// Вызовите в DOMContentLoaded
+initContactForm();
 });
