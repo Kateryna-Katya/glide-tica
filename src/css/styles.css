@@ -1,1 +1,265 @@
-1
+/* --- ЭТАП 0: ГЛОБАЛЬНЫЕ СТИЛИ --- */
+:root {
+    --bg-color: #050505;
+    --text-color: #e0e0e0;
+    --accent-cyan: #00f3ff;
+    --accent-purple: #bc00ff;
+    --neon-shadow: 0 0 10px rgba(0, 243, 255, 0.5);
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --container-width: 1200px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: 'Montserrat', sans-serif;
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+.container {
+    max-width: var(--container-width);
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+ul {
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+    transition: var(--transition);
+}
+
+/* Typography */
+h1,
+h2,
+h3,
+.logo {
+    font-family: 'Orbitron', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Buttons */
+.btn {
+    padding: 12px 24px;
+    border-radius: 4px;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 0.9rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn--outline {
+    border: 1px solid var(--accent-cyan);
+    color: var(--accent-cyan);
+    background: transparent;
+    box-shadow: var(--neon-shadow);
+}
+
+.btn--outline:hover {
+    background: var(--accent-cyan);
+    color: var(--bg-color);
+    box-shadow: 0 0 20px var(--accent-cyan);
+}
+
+/* --- ЭТАП 1: HEADER --- */
+.header {
+    padding: 20px 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    background: rgba(5, 5, 5, 0.8);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.header__container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.logo__glide {
+    color: #fff;
+}
+
+.logo__tica {
+    color: var(--accent-cyan);
+    text-shadow: var(--neon-shadow);
+}
+
+.nav__list {
+    display: flex;
+    gap: 30px;
+}
+
+.nav__link {
+    font-size: 0.85rem;
+    font-weight: 400;
+    opacity: 0.8;
+}
+
+.nav__link:hover {
+    opacity: 1;
+    color: var(--accent-cyan);
+}
+
+.burger {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.burger span,
+.burger span::before,
+.burger span::after {
+    display: block;
+    width: 25px;
+    height: 2px;
+    background: var(--accent-cyan);
+    position: relative;
+    transition: var(--transition);
+}
+
+.burger span::before,
+.burger span::after {
+    content: '';
+    position: absolute;
+}
+
+.burger span::before {
+    top: -8px;
+}
+
+.burger span::after {
+    bottom: -8px;
+}
+
+/* --- ЭТАП 2: FOOTER --- */
+.footer {
+    background: #0a0a0a;
+    padding: 80px 0 30px;
+    border-top: 1px solid rgba(188, 0, 255, 0.2);
+    margin-top: 100px;
+}
+
+.footer__grid {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr 1.2fr;
+    gap: 40px;
+    margin-bottom: 60px;
+}
+
+.footer__title {
+    color: var(--accent-purple);
+    margin-bottom: 25px;
+    font-size: 1rem;
+}
+
+.footer__text {
+    font-size: 0.9rem;
+    opacity: 0.7;
+    margin-top: 20px;
+}
+
+.footer__menu li {
+    margin-bottom: 12px;
+}
+
+.footer__menu a {
+    font-size: 0.9rem;
+    opacity: 0.7;
+}
+
+.footer__menu a:hover {
+    opacity: 1;
+    color: var(--accent-purple);
+    padding-left: 5px;
+}
+
+.footer__contacts li {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 15px;
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+.footer__contacts i {
+    color: var(--accent-cyan);
+    width: 18px;
+    flex-shrink: 0;
+}
+
+.footer__bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding-top: 30px;
+    text-align: center;
+    font-size: 0.8rem;
+    opacity: 0.5;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .footer__grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .nav {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 70%;
+        height: 100vh;
+        background: var(--bg-color);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: var(--transition);
+        border-left: 1px solid var(--accent-cyan);
+    }
+
+    .nav--active {
+        right: 0;
+    }
+
+    .nav__list {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .burger {
+        display: block;
+    }
+
+    .footer__grid {
+        grid-template-columns: 1fr;
+    }
+}
