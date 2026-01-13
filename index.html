@@ -1,31 +1,45 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/glide-tica/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vanilla App Template</title>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GlideTica | Карьерный апгрейд и инновации</title>
+  <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&family=Orbitron:wght@500;700&display=swap"
+    rel="stylesheet">
+
+  <script src="https://unpkg.com/lucide@latest"></script>
     <script type="module" crossorigin src="/glide-tica/index.js"></script>
-    <link rel="stylesheet" crossorigin href="/glide-tica/assets/styles-guStct1H.css">
+    <link rel="stylesheet" crossorigin href="/glide-tica/assets/styles-wB4oDxiD.css">
   </head>
   <body>
     <header class="header">
-  <div class="container">
-    <nav class="nav">
-      <a class="nav-logo" href="./index.html" aria-label="Site logo">
-        <svg class="nav-logo-icon" width="100" height="30">
-          <use href="{=$icon-path}"></use>
-        </svg>
-      </a>
-      <ul class="nav-list">
-        <li class="nav-item">
-          <a class="nav-link {=$highlight-act}" href="./page-2.html">Page 2</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link {=$highlight-curr}" href="./page-3.html">Page 3</a>
-        </li>
+  <div class="container header__container">
+    <a href="/" class="logo">
+      <span class="logo__glide">Glide</span><span class="logo__tica">Tica</span>
+    </a>
+
+    <nav class="nav" id="nav">
+      <ul class="nav__list">
+        <li><a href="#home" class="nav__link">Главная</a></li>
+        <li><a href="#career" class="nav__link">Карьера 2.0</a></li>
+        <li><a href="#insights" class="nav__link">Инсайты</a></li>
+        <li><a href="#cases" class="nav__link">Кейсы</a></li>
+        <li><a href="#about" class="nav__link">О нас</a></li>
       </ul>
     </nav>
+
+    <div class="header__actions">
+      <a href="#contact" class="btn btn--outline">Связаться</a>
+      <button class="burger" id="burger" aria-label="Menu">
+        <span></span>
+      </button>
+    </div>
   </div>
 </header>
 
@@ -36,21 +50,60 @@
     </main>
 
     <footer class="footer">
-  <div class="container">
-    <p class="footer-desc">
-      Made with ✨ by
-      <a
-        class="footer-link"
-        href="https://goit.global/ua/"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        GoIT team
+  <div class="container footer__grid">
+    <div class="footer__col">
+      <a href="/" class="logo logo--footer">
+        <span class="logo__glide">Glide</span><span class="logo__tica">Tica</span>
       </a>
-    </p>
+      <p class="footer__text">Решения, которые меняют правила игры в вашей карьере. Платформа года для профессионального
+        роста в Европе.</p>
+    </div>
+
+    <div class="footer__col">
+      <h4 class="footer__title">Навигация</h4>
+      <ul class="footer__menu">
+        <li><a href="#home">Главная</a></li>
+        <li><a href="#career">Стратегии</a></li>
+        <li><a href="#insights">Блог</a></li>
+        <li><a href="#about">О проекте</a></li>
+      </ul>
+    </div>
+
+    <div class="footer__col">
+      <h4 class="footer__title">Юридическая информация</h4>
+      <ul class="footer__menu">
+        <li><a href="privacy.html">Privacy Policy</a></li>
+        <li><a href="terms.html">Terms of Service</a></li>
+        <li><a href="cookies.html">Cookie Policy</a></li>
+        <li><a href="personal-data-policy.html">Personal Data</a></li>
+      </ul>
+    </div>
+
+    <div class="footer__col">
+      <h4 class="footer__title">Контакты</h4>
+      <ul class="footer__contacts">
+        <li>
+          <i data-lucide="map-pin"></i>
+          <span>Via della Conciliazione, 4, 00193 Roma RM, Italy</span>
+        </li>
+        <li>
+          <i data-lucide="phone"></i>
+          <span>+39 06 1234 5678</span>
+        </li>
+        <li>
+          <i data-lucide="mail"></i>
+          <span>hello@glide-tica.blog</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer__bottom">
+    <div class="container">
+      <p>&copy; 2026 GlideTica. Все права защищены. Передовая цифровая инфраструктура.</p>
+    </div>
   </div>
 </footer>
-
 
   </body>
 </html>
